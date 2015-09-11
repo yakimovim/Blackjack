@@ -1,0 +1,9 @@
+﻿<Application x:Class="EdlinSoftware.BlackJack.UI.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:properties="clr-namespace:EdlinSoftware.BlackJack.UI.Properties"
+             StartupUri="View/MainWindow.xaml">
+    <Application.Resources>
+        <properties:LocalResources x:Key="LocalResources"/>
+    </Application.Resources>
+</Application>

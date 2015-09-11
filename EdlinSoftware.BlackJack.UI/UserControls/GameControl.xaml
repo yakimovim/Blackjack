@@ -1,0 +1,110 @@
+﻿<UserControl x:Class="EdlinSoftware.BlackJack.UI.UserControls.GameControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:viewModel="clr-namespace:EdlinSoftware.BlackJack.UI.ViewModel"
+             xmlns:st="clr-namespace:EdlinSoftware.BlackJack;assembly=EdlinSoftware.BlackJack.Model"
+             mc:Ignorable="d" 
+             d:DesignHeight="100" d:DesignWidth="1280">
+    <Canvas>
+        <Grid Canvas.Left="10" Canvas.Top="10" Height="80" Width="1260">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Stretch">
+                <StackPanel.Resources>
+                    <viewModel:EqualsVisibilityConverter x:Key="PlayersTurnConverter" Value="{x:Static st:RoundStates.PlayersTurn}" />
+                    <viewModel:EqualsVisibilityConverter x:Key="RoundIsOverConverter" Value="{x:Static st:RoundStates.RoundIsOver}" />
+                    <viewModel:EqualsVisibilityConverter x:Key="DealerHasBustedConverter" Value="{x:Static st:RoundResults.DealerHasBusted}" />
+                    <viewModel:EqualsVisibilityConverter x:Key="PlayerHasBustedConverter" Value="{x:Static st:RoundResults.PlayerHasBusted}" />
+                    <viewModel:EqualsVisibilityConverter x:Key="DealerHasWonConverter" Value="{x:Static st:RoundResults.DealerHasWon}" />
+                    <viewModel:EqualsVisibilityConverter x:Key="PlayerHasWonConverter" Value="{x:Static st:RoundResults.PlayerHasWon}" />
+                    <viewModel:EqualsVisibilityConverter x:Key="PushConverter" Value="{x:Static st:RoundResults.Push}" />
+                    <viewModel:EqualsVisibilityConverter x:Key="BlackJackConverter" Value="{x:Static st:RoundResults.BlackJack}" />
+                    <viewModel:EqualsVisibilityConverter x:Key="DealerWonGameConverter" Value="{x:Static st:GameStates.DealerHasWon}" />
+                    <viewModel:EqualsVisibilityConverter x:Key="PlayerWonGameConverter" Value="{x:Static st:GameStates.PlayerHasWon}" />
+                    <viewModel:EqualsVisibilityConverter x:Key="GameIsOverConverter" Not="True" Value="{x:Static st:GameStates.GameIsInProgress}" />
+                    <viewModel:EqualsVisibilityConverter x:Key="GameIsInProgressConverter" Value="{x:Static st:GameStates.GameIsInProgress}" />
+                    <Style x:Key="TextBlockStyle" TargetType="TextBlock">
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="FontSize" Value="40"/>
+                        <Setter Property="FontWeight" Value="Bold"/>
+                        <Setter Property="Foreground" Value="Yellow"/>
+                        <Setter Property="Margin" Value="10,0,10,0"/>
+                    </Style>
+                    <Style x:Key="ButtonStyle" TargetType="Button">
+                        <Setter Property="FontSize" Value="30"/>
+                        <Setter Property="Margin" Value="10,0,10,0"/>
+                        <Setter Property="Width" Value="300"/>
+                        <Setter Property="Height" Value="60"/>
+                    </Style>
+                    <Style x:Key="BetButtonStyle" TargetType="Button" BasedOn="{StaticResource ButtonStyle}">
+                        <Setter Property="FontSize" Value="25"/>
+                        <Setter Property="Width" Value="100"/>
+                    </Style>
+                </StackPanel.Resources>
+                <TextBlock Style="{StaticResource TextBlockStyle}"
+                    Visibility="{Binding RoundResult, Converter={StaticResource DealerHasBustedConverter}}"
+                    Text="{Binding Source={StaticResource LocalResources}, Path=DealerWentBust}"/>
+                <TextBlock Style="{StaticResource TextBlockStyle}"
+                    Visibility="{Binding RoundResult, Converter={StaticResource PlayerHasBustedConverter}}"
+                    Text="{Binding Source={StaticResource LocalResources}, Path=PlayerWentBust}"/>
+                <TextBlock Style="{StaticResource TextBlockStyle}"
+                    Visibility="{Binding RoundResult, Converter={StaticResource DealerHasWonConverter}}"
+                    Text="{Binding Source={StaticResource LocalResources}, Path=DealerHasWon}"/>
+                <TextBlock Style="{StaticResource TextBlockStyle}"
+                    Visibility="{Binding RoundResult, Converter={StaticResource PlayerHasWonConverter}}"
+                    Text="{Binding Source={StaticResource LocalResources}, Path=PlayerHasWon}"/>
+                <TextBlock Style="{StaticResource TextBlockStyle}"
+                    Visibility="{Binding RoundResult, Converter={StaticResource PushConverter}}"
+                    Text="{Binding Source={StaticResource LocalResources}, Path=Push}"/>
+                <TextBlock Style="{StaticResource TextBlockStyle}"
+                    Visibility="{Binding RoundResult, Converter={StaticResource BlackJackConverter}}"
+                    Text="{Binding Source={StaticResource LocalResources}, Path=BlackJack}"/>
+                <TextBlock Style="{StaticResource TextBlockStyle}"
+                    Visibility="{Binding GameState, Converter={StaticResource PlayerWonGameConverter}}"
+                    Text="{Binding Source={StaticResource LocalResources}, Path=PlayerWonGame}"/>
+                <TextBlock Style="{StaticResource TextBlockStyle}"
+                    Visibility="{Binding GameState, Converter={StaticResource DealerWonGameConverter}}"
+                    Text="{Binding Source={StaticResource LocalResources}, Path=DealerWonGame}"/>
+                <Button Style="{StaticResource ButtonStyle}"
+                        Command="{Binding HitCommand}" 
+                        Visibility="{Binding RoundState, Converter={StaticResource PlayersTurnConverter}}"
+                        Content="{Binding Source={StaticResource LocalResources}, Path=HitButtonText}"/>
+                <Button Style="{StaticResource ButtonStyle}"
+                        Command="{Binding StandCommand}"
+                        Visibility="{Binding RoundState, Converter={StaticResource PlayersTurnConverter}}"
+                        Content="{Binding Source={StaticResource LocalResources}, Path=StandButtonText}"/>
+                <Button Style="{StaticResource ButtonStyle}"
+                        Command="{Binding NewGameCommand}"
+                        Visibility="{Binding GameState, Converter={StaticResource GameIsOverConverter}}"
+                        Content="{Binding Source={StaticResource LocalResources}, Path=NewGameButtonText}"/>
+                <StackPanel Orientation="Horizontal" Visibility="{Binding GameState, Converter={StaticResource GameIsInProgressConverter}}">
+                    <Button Style="{StaticResource BetButtonStyle}"
+                        Command="{Binding StartRoundCommand}"
+                        CommandParameter="5"
+                        Visibility="{Binding RoundState, Converter={StaticResource RoundIsOverConverter}}"
+                        Content="{Binding Source={StaticResource LocalResources}, Path=Bet5ButtonText}"/>
+                    <Button Style="{StaticResource BetButtonStyle}"
+                        Command="{Binding StartRoundCommand}"
+                        CommandParameter="10"
+                        Visibility="{Binding RoundState, Converter={StaticResource RoundIsOverConverter}}"
+                        Content="{Binding Source={StaticResource LocalResources}, Path=Bet10ButtonText}"/>
+                    <Button Style="{StaticResource BetButtonStyle}"
+                        Command="{Binding StartRoundCommand}"
+                        CommandParameter="20"
+                        Visibility="{Binding RoundState, Converter={StaticResource RoundIsOverConverter}}"
+                        Content="{Binding Source={StaticResource LocalResources}, Path=Bet20ButtonText}"/>
+                    <Button Style="{StaticResource BetButtonStyle}"
+                        Command="{Binding StartRoundCommand}"
+                        CommandParameter="50"
+                        Visibility="{Binding RoundState, Converter={StaticResource RoundIsOverConverter}}"
+                        Content="{Binding Source={StaticResource LocalResources}, Path=Bet50ButtonText}"/>
+                    <Button Style="{StaticResource BetButtonStyle}"
+                        Command="{Binding StartRoundCommand}"
+                        CommandParameter="All"
+                        Visibility="{Binding RoundState, Converter={StaticResource RoundIsOverConverter}}"
+                        Content="{Binding Source={StaticResource LocalResources}, Path=BetAllButtonText}"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </Canvas>
+</UserControl>

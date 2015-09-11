@@ -1,0 +1,57 @@
+﻿<Window x:Class="EdlinSoftware.BlackJack.UI.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModel="clr-namespace:EdlinSoftware.BlackJack.UI.ViewModel"
+        xmlns:m="clr-namespace:EdlinSoftware.BlackJack;assembly=EdlinSoftware.BlackJack.Model"
+        xmlns:userControls="clr-namespace:EdlinSoftware.BlackJack.UI.UserControls"
+        mc:Ignorable="d"
+        Icon="/EdlinSoftware.BlackJack;component/Images/App.png"
+        Title="{Binding Source={StaticResource LocalResources}, Path=ApplicationTitle}"
+        Height="600" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Menu Grid.Row="0" >
+            <MenuItem Header="{Binding Source={StaticResource LocalResources}, Path=MenuFile}">
+                <MenuItem Header="{Binding Source={StaticResource LocalResources}, Path=MenuNewGame}"
+                          Command="{Binding NewGameCommand}"/>
+                <Separator/>
+                <MenuItem Header="{Binding Source={StaticResource LocalResources}, Path=MenuSettings}"
+                          Command="{Binding OptionsCommand}"/>
+                <Separator/>
+                <MenuItem Header="{Binding Source={StaticResource LocalResources}, Path=MenuExit}"
+                          Command="{Binding ExitCommand}"/>
+            </MenuItem>
+        </Menu>
+        <Rectangle Grid.Row="2" Fill="ForestGreen">
+        </Rectangle>
+        <Viewbox Grid.Row="2">
+            <Canvas Width="1280" Height="720" Background="DarkGreen">
+                <Canvas.Resources>
+                    <viewModel:EqualsBooleanConverter x:Key="FirstCardIsFlippedConverter" 
+                                               Value="{x:Static m:RoundStates.RoundIsOver}"
+                                               Not="True"/>
+                </Canvas.Resources>
+                <userControls:ScoreControl Canvas.Left="0" Canvas.Top="0" Width="1280" Height="100"
+                                 PlayerMoney="{Binding PlayerMoney}"
+                                 DealerMoney="{Binding DealerMoney}"
+                                 CurrentBet="{Binding CurrentBet}"/>
+                <userControls:CardsControl Canvas.Left="0" Canvas.Top="100" Width="1280" Height="260" 
+                                 FirtsCardShouldBeFlipped="{Binding RoundState, Converter={StaticResource FirstCardIsFlippedConverter}}"
+                                 Cards="{Binding DealersCards}"
+                                 CardImagesProvider="{Binding CardImagesProvider}"
+                                 Title="{Binding Source={StaticResource LocalResources}, Path=DealersHand}"/>
+                <userControls:GameControl Canvas.Left="0" Canvas.Top="360" Width="1280" Height="100" DataContext="{Binding}" />
+                <userControls:CardsControl Canvas.Left="0" Canvas.Top="460" Width="1280" Height="260" 
+                                 Cards="{Binding PlayersCards}"
+                                 CardImagesProvider="{Binding CardImagesProvider}"
+                                 Title="{Binding Source={StaticResource LocalResources}, Path=PlayersHand}" />
+            </Canvas>
+        </Viewbox>
+    </Grid>
+</Window>
