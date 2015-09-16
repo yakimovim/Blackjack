@@ -19,7 +19,7 @@ namespace EdlinSoftware.BlackJack.Tests.Model
         public void Play_ShouldAddCardsUntil17(LeveledDealerStrategy dealerStrategy, 
             Hand dealerHand, 
             [Frozen(As = typeof(IDeckCreator))] FullDeckCreator deckCreator,
-            CardsProvider cardsProvider)
+            EndlessCardsProvider cardsProvider)
         {
             dealerStrategy.Play(dealerHand, cardsProvider);
 

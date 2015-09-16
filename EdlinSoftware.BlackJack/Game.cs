@@ -13,7 +13,7 @@ namespace EdlinSoftware.BlackJack
     /// </summary>
     public class Game : INotifyPropertyChanged
     {
-        private readonly ICardsProvider _cardsProvider;
+        private readonly IEndlessCardsProvider _cardsProvider;
         private readonly IDealerStrategy _dealerStrategy;
 
         private Round _round;
@@ -119,12 +119,12 @@ namespace EdlinSoftware.BlackJack
         /// This constructor is for test only.
         /// </summary>
         [DebuggerStepThrough]
-        public Game(ICardsProvider cardsProvider, IDealerStrategy dealerStrategy)
+        public Game(IEndlessCardsProvider cardsProvider, IDealerStrategy dealerStrategy)
             : this(cardsProvider, dealerStrategy, 100, 100)
         {}
 
         [DebuggerStepThrough]
-        public Game(ICardsProvider cardsProvider, IDealerStrategy dealerStrategy, 
+        public Game(IEndlessCardsProvider cardsProvider, IDealerStrategy dealerStrategy, 
             int playerMoney, int dealerMoney)
         {
             if (cardsProvider == null) throw new ArgumentNullException(nameof(cardsProvider));

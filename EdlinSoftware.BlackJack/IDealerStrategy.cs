@@ -1,10 +1,11 @@
 ﻿using System;
+using EdlinSoftware.Cards;
 
 namespace EdlinSoftware.BlackJack
 {
     public interface IDealerStrategy
     {
-        void Play(Hand dealersHand, ICardsProvider cardsProvider);
+        void Play(Hand dealersHand, IEndlessCardsProvider cardsProvider);
     }
 
     public class LeveledDealerStrategy : IDealerStrategy
@@ -19,7 +20,7 @@ namespace EdlinSoftware.BlackJack
             _level = level;
         }
 
-        public void Play(Hand dealersHand, ICardsProvider cardsProvider)
+        public void Play(Hand dealersHand, IEndlessCardsProvider cardsProvider)
         {
             if (dealersHand == null) throw new ArgumentNullException(nameof(dealersHand));
             if (cardsProvider == null) throw new ArgumentNullException(nameof(cardsProvider));

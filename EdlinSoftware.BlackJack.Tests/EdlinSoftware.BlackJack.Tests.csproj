@@ -35,7 +35,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EdlinSoftware.Cards, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\EdlinSoftware.Cards.1.0.0\lib\net46\EdlinSoftware.Cards.dll</HintPath>
+      <HintPath>..\packages\EdlinSoftware.Cards.1.0.1\lib\net46\EdlinSoftware.Cards.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Ploeh.AutoFixture, Version=3.31.3.0, Culture=neutral, PublicKeyToken=b24654c590009d4f, processorArchitecture=MSIL">
@@ -70,7 +70,6 @@
   <ItemGroup>
     <Compile Include="Framework\CardsDataAttribute.cs" />
     <Compile Include="Framework\FakeCardsProvider.cs" />
-    <Compile Include="Model\CardsProviderTest.cs" />
     <Compile Include="Model\GameTest.cs" />
     <Compile Include="Model\HandTest.cs" />
     <Compile Include="Model\LeveledDealerStrategyTest.cs" />

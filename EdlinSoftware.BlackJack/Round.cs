@@ -13,7 +13,7 @@ namespace EdlinSoftware.BlackJack
     {
         private const int InitialNumberOfCards = 2;
 
-        private readonly ICardsProvider _cardsProvider;
+        private readonly IEndlessCardsProvider _cardsProvider;
         private readonly IDealerStrategy _dealerStrategy;
 
         private Hand _playersHand;
@@ -25,7 +25,7 @@ namespace EdlinSoftware.BlackJack
         private RoundStates _roundState = RoundStates.RoundIsOver;
 
         public Round(
-            ICardsProvider cardsProvider, 
+            IEndlessCardsProvider cardsProvider, 
             IDealerStrategy dealerStrategy)
         {
             _cardsProvider = cardsProvider;

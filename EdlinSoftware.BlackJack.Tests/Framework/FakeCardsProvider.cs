@@ -3,7 +3,7 @@ using EdlinSoftware.Cards;
 
 namespace EdlinSoftware.BlackJack.Tests.Framework
 {
-    public class FakeCardsProvider : ICardsProvider
+    public class FakeCardsProvider : IEndlessCardsProvider
     {
         private readonly LinkedList<Card> _cards;
 

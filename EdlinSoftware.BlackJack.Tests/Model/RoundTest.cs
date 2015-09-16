@@ -13,7 +13,7 @@ namespace EdlinSoftware.BlackJack.Tests.Model
         [AutoData]
         public void NewRoundIsInCorrectState(
             [Frozen(As = typeof(IDeckCreator))] FullDeckCreator deckCreator,
-            [Frozen(As = typeof(ICardsProvider))] CardsProvider cardsProvider,
+            [Frozen(As = typeof(IEndlessCardsProvider))] EndlessCardsProvider cardsProvider,
             [Frozen(As = typeof(IDealerStrategy))] LeveledDealerStrategy dealerStrategy,
             Round round)
         {
@@ -25,7 +25,7 @@ namespace EdlinSoftware.BlackJack.Tests.Model
         [AutoData]
         public void NewRoundHasNoCards(
             [Frozen(As = typeof(IDeckCreator))] FullDeckCreator deckCreator,
-            [Frozen(As = typeof(ICardsProvider))] CardsProvider cardsProvider,
+            [Frozen(As = typeof(IEndlessCardsProvider))] EndlessCardsProvider cardsProvider,
             [Frozen(As = typeof(IDealerStrategy))] LeveledDealerStrategy dealerStrategy,
             Round round)
         {
@@ -37,7 +37,7 @@ namespace EdlinSoftware.BlackJack.Tests.Model
         [AutoData]
         public void StartRound_DealsTwoCardsToEachPlayer(
             [Frozen(As = typeof(IDeckCreator))] FullDeckCreator deckCreator,
-            [Frozen(As = typeof(ICardsProvider))] CardsProvider cardsProvider,
+            [Frozen(As = typeof(IEndlessCardsProvider))] EndlessCardsProvider cardsProvider,
             [Frozen(As = typeof(IDealerStrategy))] LeveledDealerStrategy dealerStrategy,
             Round round)
         {

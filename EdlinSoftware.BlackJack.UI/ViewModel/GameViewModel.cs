@@ -101,7 +101,7 @@ namespace EdlinSoftware.BlackJack.UI.ViewModel
             CardImagesProvider = new FileBasedCardImagesProvider(options.DeckFile,
                 new FileBasedBackImageProvider(options.BackFile));
 
-            _game = new Game(new CardsProvider(new FullDeckCreator()), new LeveledDealerStrategy(), options.InitialPlayerMoney, options.InitialDealerMoney);
+            _game = new Game(new EndlessCardsProvider(new FullDeckCreator()), new LeveledDealerStrategy(), options.InitialPlayerMoney, options.InitialDealerMoney);
             _game.PropertyChanged += OnGamePropertyChanged;
 
             RefreshCards();

@@ -13,7 +13,7 @@ namespace EdlinSoftware.BlackJack.Tests.Model
         [AutoData]
         public void NewGameIsInCorrectState(
             [Frozen(As = typeof(IDeckCreator))] FullDeckCreator deckCreator,
-            [Frozen(As = typeof(ICardsProvider))] CardsProvider cardsProvider,
+            [Frozen(As = typeof(IEndlessCardsProvider))] EndlessCardsProvider cardsProvider,
             [Frozen(As = typeof(IDealerStrategy))] LeveledDealerStrategy dealerStrategy,
             Game game)
         {
@@ -26,7 +26,7 @@ namespace EdlinSoftware.BlackJack.Tests.Model
         [AutoData]
         public void NewGameHasInitialPositiveMoney(
             [Frozen(As = typeof(IDeckCreator))] FullDeckCreator deckCreator,
-            [Frozen(As = typeof(ICardsProvider))] CardsProvider cardsProvider,
+            [Frozen(As = typeof(IEndlessCardsProvider))] EndlessCardsProvider cardsProvider,
             [Frozen(As = typeof(IDealerStrategy))] LeveledDealerStrategy dealerStrategy,
             Game game)
         {
@@ -38,7 +38,7 @@ namespace EdlinSoftware.BlackJack.Tests.Model
         [AutoData]
         public void NewGameHasNoCards(
             [Frozen(As = typeof(IDeckCreator))] FullDeckCreator deckCreator,
-            [Frozen(As = typeof(ICardsProvider))] CardsProvider cardsProvider,
+            [Frozen(As = typeof(IEndlessCardsProvider))] EndlessCardsProvider cardsProvider,
             [Frozen(As = typeof(IDealerStrategy))] LeveledDealerStrategy dealerStrategy,
             Game game)
         {
@@ -50,7 +50,7 @@ namespace EdlinSoftware.BlackJack.Tests.Model
         [AutoData]
         public void StartRound_DealsTwoCardsToEachPlayer(
             [Frozen(As = typeof(IDeckCreator))] FullDeckCreator deckCreator,
-            [Frozen(As = typeof(ICardsProvider))] CardsProvider cardsProvider,
+            [Frozen(As = typeof(IEndlessCardsProvider))] EndlessCardsProvider cardsProvider,
             [Frozen(As = typeof(IDealerStrategy))] LeveledDealerStrategy dealerStrategy,
             Game game)
         {
@@ -64,7 +64,7 @@ namespace EdlinSoftware.BlackJack.Tests.Model
         [AutoData]
         public void StartRound_SetsCorrectBet(
             [Frozen(As = typeof(IDeckCreator))] FullDeckCreator deckCreator,
-            [Frozen(As = typeof(ICardsProvider))] CardsProvider cardsProvider,
+            [Frozen(As = typeof(IEndlessCardsProvider))] EndlessCardsProvider cardsProvider,
             [Frozen(As = typeof(IDealerStrategy))] LeveledDealerStrategy dealerStrategy,
             Game game)
         {
