@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EdlinSoftware.Cards, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\EdlinSoftware.Cards.1.0.0\lib\net46\EdlinSoftware.Cards.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -57,16 +61,13 @@
     <Compile Include="RoundStates.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EdlinSoftware.Cards\EdlinSoftware.Cards.csproj">
-      <Project>{424e1cf6-b0b4-4072-bded-4d1f003b0d4c}</Project>
-      <Name>EdlinSoftware.Cards</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

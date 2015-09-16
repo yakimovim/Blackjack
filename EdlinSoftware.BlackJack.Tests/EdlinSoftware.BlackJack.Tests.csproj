@@ -34,6 +34,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EdlinSoftware.Cards, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\EdlinSoftware.Cards.1.0.0\lib\net46\EdlinSoftware.Cards.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Ploeh.AutoFixture, Version=3.31.3.0, Culture=neutral, PublicKeyToken=b24654c590009d4f, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoFixture.3.31.3\lib\net40\Ploeh.AutoFixture.dll</HintPath>
       <Private>True</Private>
@@ -81,10 +85,6 @@
     <ProjectReference Include="..\EdlinSoftware.BlackJack\EdlinSoftware.BlackJack.csproj">
       <Project>{b1c10108-9f1f-4e90-84c9-6928b5951d05}</Project>
       <Name>EdlinSoftware.BlackJack</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EdlinSoftware.Cards\EdlinSoftware.Cards.csproj">
-      <Project>{424e1cf6-b0b4-4072-bded-4d1f003b0d4c}</Project>
-      <Name>EdlinSoftware.Cards</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

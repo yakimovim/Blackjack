@@ -38,6 +38,10 @@
     <ApplicationIcon>Images\App.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EdlinSoftware.Cards, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\EdlinSoftware.Cards.1.0.0\lib\net46\EdlinSoftware.Cards.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
@@ -137,6 +141,7 @@
     <None Include="Decks\Deck 1.deck">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -150,10 +155,6 @@
     <ProjectReference Include="..\EdlinSoftware.BlackJack\EdlinSoftware.BlackJack.csproj">
       <Project>{b1c10108-9f1f-4e90-84c9-6928b5951d05}</Project>
       <Name>EdlinSoftware.BlackJack</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EdlinSoftware.Cards\EdlinSoftware.Cards.csproj">
-      <Project>{424e1cf6-b0b4-4072-bded-4d1f003b0d4c}</Project>
-      <Name>EdlinSoftware.Cards</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
