@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Globalization;
 using System.IO;
-using System.Windows;
 using System.Windows.Media.Imaging;
 using EdlinSoftware.BlackJack.Annotations;
 using EdlinSoftware.Cards;
+using EdlinSoftware.Cards.ImagePositions;
+using Rect = System.Windows.Rect;
+using CardSize = EdlinSoftware.Cards.ImagePositions.Size;
 
 namespace EdlinSoftware.BlackJack.UI.ViewModel
 {
@@ -24,24 +26,11 @@ namespace EdlinSoftware.BlackJack.UI.ViewModel
         private readonly IBackImageProvider _backImageProvider;
 
         private double _ratio;
-        private Size _cardSize;
 
         private BitmapImage _cardsImage;
+        private CardSize _imageSize;
 
-        private double _firstCardHorizontalOffset;
-        private double _firstCardVerticalOffset;
-
-        private double _cardWidth;
-        private double _cardHeight;
-
-        private double _horizontalSpacing;
-        private double _verticalSpacing;
-
-        private Ranks[] _ranks;
-        private Suits[] _suits;
-
-        private int _imageWidth;
-        private int _imageHeight;
+        private RectangularCardImagePositionProvider _cardImagePositionProvider;
 
         public FileBasedCardImagesProvider(string deckDescriptionFilePath,
             [NotNull] IBackImageProvider backImageProvider)
@@ -61,39 +50,39 @@ namespace EdlinSoftware.BlackJack.UI.ViewModel
 
         private void ParseDescriptionFile(string deckDirectory, string[] descriptionLines)
         {
+            var imageDescription = new RectangularDeckImageDescription();
+
             var lineIndex = 0;
 
             _cardsImage = new BitmapImage(new Uri(Path.Combine(deckDirectory, descriptionLines[lineIndex++])));
 
-            _imageWidth = _cardsImage.PixelWidth;
-            _imageHeight = _cardsImage.PixelHeight;
+            _imageSize = new CardSize(_cardsImage.PixelWidth, _cardsImage.PixelHeight);
 
             var offsetParts = descriptionLines[lineIndex++].Split(' ');
-            _firstCardHorizontalOffset = double.Parse(offsetParts[0], CultureInfo.InvariantCulture);
-            _firstCardVerticalOffset = double.Parse(offsetParts[1], CultureInfo.InvariantCulture);
+            imageDescription.HorizontalOffsetOfFirstCard = double.Parse(offsetParts[0], CultureInfo.InvariantCulture);
+            imageDescription.VerticalOffsetOfFirstCard = double.Parse(offsetParts[1], CultureInfo.InvariantCulture);
 
             var cardSizeParts = descriptionLines[lineIndex++].Split(' ');
-            _cardWidth = double.Parse(cardSizeParts[0], CultureInfo.InvariantCulture);
-            _cardHeight = double.Parse(cardSizeParts[1], CultureInfo.InvariantCulture);
+            imageDescription.CardWidth = double.Parse(cardSizeParts[0], CultureInfo.InvariantCulture);
+            imageDescription.CardHeight = double.Parse(cardSizeParts[1], CultureInfo.InvariantCulture);
 
-            _ratio = _cardWidth / _cardHeight;
-
-            _cardSize = new Size(_cardWidth / _imageWidth, _cardHeight / _imageHeight);
+            _ratio = imageDescription.CardWidth / imageDescription.CardHeight;
 
             var spacingParts = descriptionLines[lineIndex++].Split(' ');
-            _horizontalSpacing = double.Parse(spacingParts[0], CultureInfo.InvariantCulture);
-            _verticalSpacing = double.Parse(spacingParts[1], CultureInfo.InvariantCulture);
+            imageDescription.HorizontalSpacingBetweenCards = double.Parse(spacingParts[0], CultureInfo.InvariantCulture);
+            imageDescription.VerticalSpacingBetweenCards = double.Parse(spacingParts[1], CultureInfo.InvariantCulture);
 
-            SetRanks(descriptionLines[lineIndex++]);
+            imageDescription.Ranks = GetRanks(descriptionLines[lineIndex++]);
+            imageDescription.Suits = GetSuits(descriptionLines[lineIndex]);
 
-            SetSuits(descriptionLines[lineIndex]);
+            _cardImagePositionProvider = new RectangularCardImagePositionProvider(imageDescription);
         }
 
-        private void SetRanks(string ranksLine)
+        private Ranks[] GetRanks(string ranksLine)
         {
             var ranks = ranksLine.Split(' ');
 
-            _ranks = new Ranks[ranks.Length];
+            var ranksArray = new Ranks[ranks.Length];
 
             var index = 0;
             foreach (var rank in ranks)
@@ -101,53 +90,55 @@ namespace EdlinSoftware.BlackJack.UI.ViewModel
                 switch (rank.ToUpperInvariant())
                 {
                     case "A":
-                        _ranks[index++] = Ranks.Ace;
+                        ranksArray[index++] = Ranks.Ace;
                         break;
                     case "2":
-                        _ranks[index++] = Ranks.Two;
+                        ranksArray[index++] = Ranks.Two;
                         break;
                     case "3":
-                        _ranks[index++] = Ranks.Three;
+                        ranksArray[index++] = Ranks.Three;
                         break;
                     case "4":
-                        _ranks[index++] = Ranks.Four;
+                        ranksArray[index++] = Ranks.Four;
                         break;
                     case "5":
-                        _ranks[index++] = Ranks.Five;
+                        ranksArray[index++] = Ranks.Five;
                         break;
                     case "6":
-                        _ranks[index++] = Ranks.Six;
+                        ranksArray[index++] = Ranks.Six;
                         break;
                     case "7":
-                        _ranks[index++] = Ranks.Seven;
+                        ranksArray[index++] = Ranks.Seven;
                         break;
                     case "8":
-                        _ranks[index++] = Ranks.Eight;
+                        ranksArray[index++] = Ranks.Eight;
                         break;
                     case "9":
-                        _ranks[index++] = Ranks.Nine;
+                        ranksArray[index++] = Ranks.Nine;
                         break;
                     case "10":
-                        _ranks[index++] = Ranks.Ten;
+                        ranksArray[index++] = Ranks.Ten;
                         break;
                     case "J":
-                        _ranks[index++] = Ranks.Jack;
+                        ranksArray[index++] = Ranks.Jack;
                         break;
                     case "Q":
-                        _ranks[index++] = Ranks.Queen;
+                        ranksArray[index++] = Ranks.Queen;
                         break;
                     case "K":
-                        _ranks[index++] = Ranks.King;
+                        ranksArray[index++] = Ranks.King;
                         break;
                 }
             }
+
+            return ranksArray;
         }
 
-        private void SetSuits(string suitsLine)
+        private Suits[] GetSuits(string suitsLine)
         {
             var suits = suitsLine.Split(' ');
 
-            _suits = new Suits[suits.Length];
+            var suitsArray = new Suits[suits.Length];
 
             var index = 0;
             foreach (var suit in suits)
@@ -155,19 +146,21 @@ namespace EdlinSoftware.BlackJack.UI.ViewModel
                 switch (suit.ToUpperInvariant())
                 {
                     case "H":
-                        _suits[index++] = Suits.Hearts;
+                        suitsArray[index++] = Suits.Hearts;
                         break;
                     case "C":
-                        _suits[index++] = Suits.Clubs;
+                        suitsArray[index++] = Suits.Clubs;
                         break;
                     case "D":
-                        _suits[index++] = Suits.Diamonds;
+                        suitsArray[index++] = Suits.Diamonds;
                         break;
                     case "S":
-                        _suits[index++] = Suits.Spades;
+                        suitsArray[index++] = Suits.Spades;
                         break;
                 }
             }
+
+            return suitsArray;
         }
 
         public double GetCardImageRatio()
@@ -182,13 +175,7 @@ namespace EdlinSoftware.BlackJack.UI.ViewModel
 
         public Rect GetViewboxForCard(Card card)
         {
-            var hIndex = Array.IndexOf(_ranks, card.Rank);
-            var vIndex = Array.IndexOf(_suits, card.Suit);
-
-            var left = _firstCardHorizontalOffset + hIndex*(_cardWidth + _horizontalSpacing);
-            var top = _firstCardVerticalOffset + vIndex * (_cardHeight + _verticalSpacing);
-
-            return new Rect(new Point(left / _imageWidth, top / _imageHeight), _cardSize);
+            return _cardImagePositionProvider.GetCardRectangle(card).Normalize(_imageSize);
         }
 
         public BitmapImage GetImageForBack()

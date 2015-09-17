@@ -1,7 +1,9 @@
 ﻿using System;
 using System.IO;
-using System.Windows;
 using System.Windows.Media.Imaging;
+using EdlinSoftware.Cards.ImagePositions;
+using Rect = System.Windows.Rect;
+using CardSize = EdlinSoftware.Cards.ImagePositions.Size;
 
 namespace EdlinSoftware.BlackJack.UI.ViewModel
 {
@@ -14,17 +16,7 @@ namespace EdlinSoftware.BlackJack.UI.ViewModel
     public class FileBasedBackImageProvider : IBackImageProvider
     {
         private BitmapImage _backImage;
-
-        private int _imageWidth;
-        private int _imageHeight;
-
-        private int _backLeft;
-        private int _backTop;
-
-        private int _cardWidth;
-        private int _cardHeight;
-
-        private Size _cardSize;
+        private Rect _viewBox;
 
         public FileBasedBackImageProvider(string backDescriptionFilePath)
         {
@@ -40,22 +32,26 @@ namespace EdlinSoftware.BlackJack.UI.ViewModel
 
         private void ParseDescriptionFile(string backDirectory, string[] descriptionLines)
         {
+            var oneCardImageDescription = new OneCardImageDescription();
+
             var lineIndex = 0;
 
             _backImage = new BitmapImage(new Uri(Path.Combine(backDirectory, descriptionLines[lineIndex++])));
 
-            _imageWidth = _backImage.PixelWidth;
-            _imageHeight = _backImage.PixelHeight;
+            var imageWidth = _backImage.PixelWidth;
+            var imageHeight = _backImage.PixelHeight;
 
             var backParts = descriptionLines[lineIndex++].Split(' ');
-            _backLeft = int.Parse(backParts[0]);
-            _backTop = int.Parse(backParts[1]);
+            oneCardImageDescription.HorizontalOffset = int.Parse(backParts[0]);
+            oneCardImageDescription.VerticalOffset = int.Parse(backParts[1]);
 
             var cardSizeParts = descriptionLines[lineIndex].Split(' ');
-            _cardWidth = int.Parse(cardSizeParts[0]);
-            _cardHeight = int.Parse(cardSizeParts[1]);
+            oneCardImageDescription.CardWidth = int.Parse(cardSizeParts[0]);
+            oneCardImageDescription.CardHeight = int.Parse(cardSizeParts[1]);
 
-            _cardSize = new Size((double)_cardWidth / _imageWidth, (double)_cardHeight / _imageHeight);
+            var oneCardImagePositionProvider = new OneCardImagePositionProvider(oneCardImageDescription);
+
+            _viewBox = oneCardImagePositionProvider.GetCardRectangle().Normalize(new CardSize(imageWidth, imageHeight));
         }
 
         public BitmapImage GetImageForBack()
@@ -65,7 +61,7 @@ namespace EdlinSoftware.BlackJack.UI.ViewModel
 
         public Rect GetViewboxForBack()
         {
-            return new Rect(new Point((double)_backLeft / _imageWidth, (double)_backTop / _imageHeight), _cardSize);
+            return _viewBox;
         }
     }
 }
